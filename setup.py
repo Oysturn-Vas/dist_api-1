@@ -34,7 +34,7 @@ def euclidian(result):
     return result
 
 
-@ app.post('/')
+@ app.get('/')
 async def scoring_endpoint(str_id: user_id):
     result = db.collection('CHATBOT_HISTORY').document(
         str_id.u_id).get()
