@@ -38,9 +38,16 @@ def euclidian(result):
 async def scoring_endpoint(str_id: user_id):
     result = db.collection('CHATBOT_HISTORY').document(
         str_id.u_id).get()
-    print(type(result))
-    result = result.to_dict()
-    print(result)
-    res = euclidian(result)
+    if result.exists:
+        result = result.to_dict()
+        res = euclidian(result)
+        return dict(res)
 
-    return dict(res)
+    else:
+        return {
+            ' ADHD': 0,
+            ' Anxiety': 0,
+            ' Depression': 0,
+            ' Self': 0,
+            ' Suicide': 0
+        }
