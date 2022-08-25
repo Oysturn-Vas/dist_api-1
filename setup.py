@@ -32,7 +32,7 @@ class messageItem(BaseModel):
 @app.post('/')
 async def scoring_endpoint(item: messageItem):
     item.euclidian()
-    return item
+    return dict(item)
 
 
 # cred = credentials.Certificate(
