@@ -9,42 +9,38 @@ from fastapi import FastAPI
 app = FastAPI()
 
 
-class messageItem(BaseModel):
-    ADHD: float
-    Anixiety: float
-    Depression: float
-    Self: float
-    Sucidal: float
-
-    def euclidian(self):
-        self.ADHD = (1024-np.linalg.norm(
-            np.array((self.ADHD, self.Anixiety, self.Depression, self.Self, self.Sucidal))-np.array((1024, 0, 0, 0, 0))))/1024*100
-        self.Anixiety = (1024-np.linalg.norm(
-            np.array((self.ADHD, self.Anixiety, self.Depression, self.Self, self.Sucidal))-np.array((0, 1024, 0, 0, 0))))/1024*100
-        self.Depression = (1024-np.linalg.norm(
-            np.array((self.ADHD, self.Anixiety, self.Depression, self.Self, self.Sucidal))-np.array((0, 0, 1024, 0, 0))))/1024*100
-        self.Self = (1024-np.linalg.norm(
-            np.array((self.ADHD, self.Anixiety, self.Depression, self.Self, self.Sucidal))-np.array((0, 0, 0, 1024, 0))))/1024*100
-        self.Sucidal = (1024-np.linalg.norm(
-            np.array((self.ADHD, self.Anixiety, self.Depression, self.Self, self.Sucidal))-np.array((0, 0, 0, 0, 1024))))/1024*100
+cred = credentials.Certificate(
+    "coco-sih-firebase-adminsdk-qrhf1-88d3ad8656.json")
+firebase_admin.initialize_app(cred)
+db = firestore.client()
+res = {}
 
 
-@app.post('/')
-async def scoring_endpoint(item: messageItem):
-    item.euclidian()
-    return dict(item)
+class user_id(BaseModel):
+    u_id: str
 
 
-# cred = credentials.Certificate(
-#     "coco-sih-firebase-adminsdk-qrhf1-88d3ad8656.json")
-# firebase_admin.initialize_app(cred)
+def euclidian(result):
+    result[' ADHD'] = (1024-np.linalg.norm(
+        np.array((result[' ADHD'], result[' Anxiety'], result[' Depression'], result[' Self'], result[' Suicide']))-np.array((1024, 0, 0, 0, 0))))/1024*100
+    result[' Anxiety'] = (1024-np.linalg.norm(
+        np.array((result[' ADHD'], result[' Anxiety'], result[' Depression'], result[' Self'], result[' Suicide']))-np.array((0, 1024, 0, 0, 0))))/1024*100
+    result[' Depression'] = (1024-np.linalg.norm(
+        np.array((result[' ADHD'], result[' Anxiety'], result[' Depression'], result[' Self'], result[' Suicide']))-np.array((0, 0, 1024, 0, 0))))/1024*100
+    result[' Self'] = (1024-np.linalg.norm(
+        np.array((result[' ADHD'], result[' Anxiety'], result[' Depression'], result[' Self'], result[' Suicide']))-np.array((0, 0, 0, 1024, 0))))/1024*100
+    result[' Suicide'] = (1024-np.linalg.norm(
+        np.array((result[' ADHD'], result[' Anxiety'], result[' Depression'], result[' Self'], result[' Suicide']))-np.array((0, 0, 0, 0, 1024))))/1024*100
+    return result
 
-# db = firestore.client()
-# data = {
-#     'ADHD': 0,
-#     'Depression': 0,
-#     'Sucidal': 0,
-#     'Anixiety': 0,
-#     'Self': 0
-# }
-# db.collection('users').add(data)
+
+@ app.post('/')
+async def scoring_endpoint(str_id: user_id):
+    result = db.collection('CHATBOT_HISTORY').document(
+        str_id.u_id).get()
+    print(type(result))
+    result = result.to_dict()
+    print(result)
+    res = euclidian(result)
+
+    return dict(res)
