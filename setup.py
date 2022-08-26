@@ -21,16 +21,16 @@ class user_id(BaseModel):
 
 
 def euclidian(result):
-    result[' ADHD'] = (1024-np.linalg.norm(
-        np.array((result[' ADHD'], result[' Anxiety'], result[' Depression'], result[' Self'], result[' Suicide']))-np.array((1024, 0, 0, 0, 0))))/1024*100
-    result[' Anxiety'] = (1024-np.linalg.norm(
-        np.array((result[' ADHD'], result[' Anxiety'], result[' Depression'], result[' Self'], result[' Suicide']))-np.array((0, 1024, 0, 0, 0))))/1024*100
-    result[' Depression'] = (1024-np.linalg.norm(
-        np.array((result[' ADHD'], result[' Anxiety'], result[' Depression'], result[' Self'], result[' Suicide']))-np.array((0, 0, 1024, 0, 0))))/1024*100
-    result[' Self'] = (1024-np.linalg.norm(
-        np.array((result[' ADHD'], result[' Anxiety'], result[' Depression'], result[' Self'], result[' Suicide']))-np.array((0, 0, 0, 1024, 0))))/1024*100
-    result[' Suicide'] = (1024-np.linalg.norm(
-        np.array((result[' ADHD'], result[' Anxiety'], result[' Depression'], result[' Self'], result[' Suicide']))-np.array((0, 0, 0, 0, 1024))))/1024*100
+    result['ADHD'] = (1024-np.linalg.norm(
+        np.array((result['ADHD'], result['Anxiety'], result['Depression'], result['Self'], result['Suicide']))-np.array((1024, 0, 0, 0, 0))))/1024*100
+    result['Anxiety'] = (1024-np.linalg.norm(
+        np.array((result['ADHD'], result['Anxiety'], result['Depression'], result['Self'], result['Suicide']))-np.array((0, 1024, 0, 0, 0))))/1024*100
+    result['Depression'] = (1024-np.linalg.norm(
+        np.array((result['ADHD'], result['Anxiety'], result['Depression'], result['Self'], result['Suicide']))-np.array((0, 0, 1024, 0, 0))))/1024*100
+    result['Self'] = (1024-np.linalg.norm(
+        np.array((result['ADHD'], result['Anxiety'], result['Depression'], result['Self'], result['Suicide']))-np.array((0, 0, 0, 1024, 0))))/1024*100
+    result['Suicide'] = (1024-np.linalg.norm(
+        np.array((result['ADHD'], result['Anxiety'], result['Depression'], result['Self'], result['Suicide']))-np.array((0, 0, 0, 0, 1024))))/1024*100
     return result
 
 
