@@ -5,6 +5,7 @@ from pydantic import BaseModel
 import numpy as np
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 origins = [
